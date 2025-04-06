@@ -127,31 +127,33 @@ const DrawingApp = () => {
 	};
 
 	useEffect(() => {
+	
 		const canvas = canvasRef.current;
+		if (!canvas) return;
+	
 		const ctx = canvas.getContext('2d');
 		ctxRef.current = ctx;
-
+	
 		canvas.width = window.innerWidth - canvas.offsetLeft;
 		canvas.height = window.innerHeight - canvas.offsetTop;
-
+	
 		ctx.fillStyle = 'white';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-
 		// Save initial state to undo stack
 		setUndoStack([ctx.getImageData(0, 0, canvas.width, canvas.height)]);
-
+	
 		canvas.addEventListener('mousedown', handleMouseDown);
 		canvas.addEventListener('mouseup', handleMouseUp);
 		canvas.addEventListener('mousemove', handleMouseMove);
 		document.addEventListener('keydown', handleKeyDown);
-
+	
 		return () => {
 			canvas.removeEventListener('mousedown', handleMouseDown);
 			canvas.removeEventListener('mouseup', handleMouseUp);
 			canvas.removeEventListener('mousemove', handleMouseMove);
 			document.removeEventListener('keydown', handleKeyDown);
 		};
-	}, []); // Only run once
+	}, [showModel]); // 
 
 	const handleClear = () => {
 		const canvas = canvasRef.current;

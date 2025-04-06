@@ -1,6 +1,7 @@
 import React, { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
+	Html,
 	OrbitControls,
 	useGLTF,
 	Environment,
@@ -18,7 +19,6 @@ export default function ModelViewer({ modelUrl }) {
 
 	return (
 		<div className="w-screen h-screen">
-			<Suspense fallback={<div style={{ color: 'white' }}>Loading...</div>}>
 				<Canvas
 					gl={{
 						antialias: true,
@@ -46,8 +46,10 @@ export default function ModelViewer({ modelUrl }) {
 						castShadow
 						shadow-mapSize={[1024, 1024]}
 					/>
-
-					<Model url={memoizedUrl} />
+					<Suspense fallback={<Html><div style={{ color: 'black' }}>LOADING...</div></Html>}>
+						<Model url={memoizedUrl} />
+						<Environment preset="city" />
+					</Suspense>
 
 					<ContactShadows
 						position={[0, -0.5, 0]}
@@ -55,7 +57,7 @@ export default function ModelViewer({ modelUrl }) {
 						scale={10}
 						blur={1.5}
 					/>
-					<Environment preset="city" />
+
 					<OrbitControls
 						makeDefault
 						minPolarAngle={0}
@@ -64,7 +66,6 @@ export default function ModelViewer({ modelUrl }) {
 						dampingFactor={0.05}
 					/>
 				</Canvas>
-			</Suspense>
 		</div>
 	);
 }
