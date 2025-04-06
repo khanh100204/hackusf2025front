@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import ColorPickerInput from './ui/colorpicker';
 const Toolbar = ({
 	strokeColor,
 	setStrokeColor,
@@ -23,9 +25,8 @@ const Toolbar = ({
 					>
 						Stroke
 					</label>
-					<input
+					<ColorPickerInput
 						id="stroke"
-						type="color"
 						value={strokeColor}
 						onChange={(e) => setStrokeColor(e.target.value)}
 						className="w-16 h-8 border border-gray-300 rounded-md"
