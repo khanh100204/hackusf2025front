@@ -1,0 +1,70 @@
+import React, { Suspense, useMemo } from 'react';
+import { Canvas } from '@react-three/fiber';
+import {
+	OrbitControls,
+	useGLTF,
+	Environment,
+	ContactShadows,
+	PerspectiveCamera,
+} from '@react-three/drei';
+
+function Model({ url }) {
+	const gltf = useGLTF(url);
+	return <primitive object={gltf.scene} dispose={null} />;
+}
+
+export default function ModelViewer({ modelUrl }) {
+	const memoizedUrl = useMemo(() => modelUrl, [modelUrl]);
+
+	return (
+		<div className="w-screen h-screen">
+			<Suspense fallback={<div style={{ color: 'white' }}>Loading...</div>}>
+				<Canvas
+					gl={{
+						antialias: true,
+						powerPreference: 'high-performance',
+						alpha: false,
+					}}
+					dpr={[1, 2]} // Adjust based on device capabilities
+					performance={{ min: 0.5 }} // Performance throttling
+					shadows
+				>
+					<color attach="background" args={['#202030']} />
+					<fog attach="fog" args={['#202030', 5, 20]} />
+					<PerspectiveCamera makeDefault position={[0, 1, 5]} fov={45} />
+
+					<gridHelper
+						args={[100, 100, '#2e2f30', '#828399']}
+						position={[0, -0.5, 0]}
+					/>
+					{/* <axesHelper args={[2]} /> */}
+
+					<ambientLight intensity={0.5} />
+					<directionalLight
+						position={[5, 5, 5]}
+						intensity={1}
+						castShadow
+						shadow-mapSize={[1024, 1024]}
+					/>
+
+					<Model url={memoizedUrl} />
+
+					<ContactShadows
+						position={[0, -0.5, 0]}
+						opacity={0.75}
+						scale={10}
+						blur={1.5}
+					/>
+					<Environment preset="city" />
+					<OrbitControls
+						makeDefault
+						minPolarAngle={0}
+						maxPolarAngle={Math.PI / 2}
+						enableDamping
+						dampingFactor={0.05}
+					/>
+				</Canvas>
+			</Suspense>
+		</div>
+	);
+}
