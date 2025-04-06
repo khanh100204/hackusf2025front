@@ -25,6 +25,58 @@ h1 {
   display: flex;
 }
 
+.glow-button {
+  position: relative;
+  z-index: 1;
+}
+
+/* Blurred glowing aura behind the border */
+.glow-button::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: -2;
+  border-radius: inherit;
+  background: linear-gradient(130deg, #00aeff, #a686ff, #0095ff, #00aeff);
+  background-size: 300% 300%;
+  animation: glowMove 6s linear infinite;
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Crisp animated border (preserves button padding + shape) */
+.glow-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(130deg, #00aeff, #a686ff, #0095ff, #00aeff);
+  background-size: 300% 300%;
+  animation: glowMove 6s linear infinite;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+@keyframes glowMove {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

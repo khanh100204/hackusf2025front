@@ -29,8 +29,8 @@ export default function ModelViewer({ modelUrl }) {
 					performance={{ min: 0.5 }} // Performance throttling
 					shadows
 				>
-					<color attach="background" args={['#202030']} />
-					<fog attach="fog" args={['#202030', 5, 20]} />
+					<color attach="background" args={['#fafafa']} />
+					<fog attach="fog" args={['#fafafa', 5, 20]} />
 					<PerspectiveCamera makeDefault position={[0, 1, 5]} fov={45} />
 
 					<gridHelper
@@ -51,7 +51,7 @@ export default function ModelViewer({ modelUrl }) {
 
 					<ContactShadows
 						position={[0, -0.5, 0]}
-						opacity={0.75}
+						opacity={0.1}
 						scale={10}
 						blur={1.5}
 					/>

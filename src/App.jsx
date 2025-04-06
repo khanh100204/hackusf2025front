@@ -269,10 +269,17 @@ const DrawingApp = () => {
 		};
 	}, []);
 
+	const [genAImodel, setGenAImodel] = useState('sample.glb');
+	const [open, setOpen] = useState(false);
 	return (
 		<>
-			<Dialog>
-				<ImproveDialog imageUrl={exportedImage} />
+			<Dialog open={open} onOpenChange={setOpen}>
+				<ImproveDialog
+					imageUrl={exportedImage}
+					onOpenChange={setOpen}
+					toggleModelShow={setShowModel}
+					setModelUrl={setGenAImodel}
+				/>
 
 				<ContextMenu>
 					<ContextMenuContent className="dark w-48">
@@ -307,11 +314,12 @@ const DrawingApp = () => {
 							handleDownload={handleDownload}
 							showModel={showModel}
 							setShowModel={setShowModel}
+							modelUrl={genAImodel}
 						/>
-						<ContextMenuTrigger>
-							{showModel ? (
-								<ModelViewer modelUrl="/response.glb" />
-							) : (
+						{showModel ? (
+							<ModelViewer modelUrl={genAImodel} />
+						) : (
+							<ContextMenuTrigger>
 								<div className="drawing-board grow flex">
 									<canvas
 										ref={canvasRef}
@@ -319,8 +327,8 @@ const DrawingApp = () => {
 										className="flex-grow"
 									/>
 								</div>
-							)}
-						</ContextMenuTrigger>
+							</ContextMenuTrigger>
+						)}
 					</section>
 				</ContextMenu>
 			</Dialog>
